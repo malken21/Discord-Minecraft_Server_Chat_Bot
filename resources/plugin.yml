@@ -1,0 +1,4 @@
+name: Discord_text
+version: '${version}'
+main: marumasa.discord_text.Discord_text
+api-version: 1.16
