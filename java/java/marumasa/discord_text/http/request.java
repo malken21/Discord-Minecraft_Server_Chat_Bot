@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.UUID;
 
 
@@ -16,7 +17,7 @@ public class request {
 
     public void post(String name, String text, UUID uuid) throws IOException {
 
-        String JSON = "{\"name\":\"" + name + "\",\"text\":\"" + text + "\",\"uuid\":\"" + uuid + "\"}";
+        String JSON = "{\"name\":\"" + URLEncoder.encode(name, "UTF-8") + "\",\"text\":\"" + URLEncoder.encode(text, "UTF-8") + "\",\"uuid\":\"" + uuid + "\"}";
 
         URL url = new URL(URL);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
