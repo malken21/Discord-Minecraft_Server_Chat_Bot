@@ -1,5 +1,6 @@
 package marumasa.discord_text;
 
+import marumasa.discord_text.server.status;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -7,7 +8,9 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import marumasa.discord_text.http.request;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.ServerLoadEvent;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.UUID;
 
@@ -25,7 +28,7 @@ public class eventListener implements Listener {
         String NAME = URLEncoder.encode(event.getPlayer().getName(), "UTF-8");
         UUID UUID = event.getPlayer().getUniqueId();
 
-        String JSON = "{\"name\":\"" + NAME + "\",\"uuid\":\"" + UUID + "\",\"type\":\"" + TYPE + "\"}";
+        String JSON = "{\"name\":\"" + NAME + "\",\"uuid\":\"" + UUID + "\",\"type\":" + TYPE + "}";
         new request().post(JSON);
     }
 
@@ -37,7 +40,7 @@ public class eventListener implements Listener {
         String TEXT = URLEncoder.encode(event.getMessage(), "UTF-8");
         UUID UUID = event.getPlayer().getUniqueId();
 
-        String JSON = "{\"name\":\"" + NAME + "\",\"text\":\"" + TEXT + "\",\"uuid\":\"" + UUID + "\",\"type\":\"" + TYPE + "\"}";
+        String JSON = "{\"name\":\"" + NAME + "\",\"text\":\"" + TEXT + "\",\"uuid\":\"" + UUID + "\",\"type\":" + TYPE + "}";
         new request().post(JSON);
     }
 
@@ -48,7 +51,12 @@ public class eventListener implements Listener {
         String NAME = URLEncoder.encode(event.getPlayer().getName(), "UTF-8");
         UUID UUID = event.getPlayer().getUniqueId();
 
-        String JSON = "{\"name\":\"" + NAME + "\",\"uuid\":\"" + UUID + "\",\"type\":\"" + TYPE + "\"}";
+        String JSON = "{\"name\":\"" + NAME + "\",\"uuid\":\"" + UUID + "\",\"type\":" + TYPE + "}";
         new request().post(JSON);
+    }
+
+    @EventHandler
+    public void onLoad(ServerLoadEvent event) throws IOException {
+        new status().onEnable();
     }
 }
