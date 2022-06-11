@@ -1,28 +1,36 @@
-const { Client, Intents, MessageEmbed } = require("discord.js");
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
-
 const http = require('http');
-
 const port = 3210;
 
-http.createServer(function (req, res) {
+const discord_bot = require("./discord/discord_bot.js")
+
+const Server = http.createServer(function (req, res) {
   if (req.method === 'POST') {
-
     res.setHeader("content-type", "application/json;charset=utf-8");
-
     let data = '';
-
-    //POSTデータを受けとる
     req.on('data', chunk => { data += chunk })
       .on('end', function () {
         res.end("ok");
-
-        data = JSON.parse(data)
-        data.name = decodeURI(data.name);
-        data.text = decodeURI(data.text);
-        console.log(data);
-
+        data = JSON.parse(data);
+        if (discord_bot.bot() === false) return;
+        switch (data.type) {
+          case 0:
+            discord_bot.login(data);
+            break;
+          case 1:
+            discord_bot.Chat(data);
+            break;
+          case 2:
+            discord_bot.Quit(data);
+            break;
+          case 1000:
+            discord_bot.onEnable();
+            break;
+          case 1001:
+            discord_bot.onDisable();
+            break;
+        }
       })
-
   }
-}).listen(port);
+})
+Server.listen(port);
+console.log(`port : ${port}`)
